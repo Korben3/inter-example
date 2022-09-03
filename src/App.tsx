@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { VRButton, XR, Controllers, Interactive } from "@react-three/xr";
+import { Canvas } from "@react-three/fiber";
+import CubeSimple from "./models/CubeSimple";
+import CubeComplex from "./models/CubeComplex";
+import { useState } from "react";
 
 function App() {
+  const [hover1, setHover1] = useState(false);
+  const [hover2, setHover2] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <VRButton />
+      <Canvas>
+        <XR>
+          <Controllers />
+          <ambientLight />
+          <pointLight position={[0, 3, 0]} />
+
+          <Interactive onHover={() => setHover1(true)} onBlur={() => setHover1(false)}>
+            <CubeSimple position={[-3, 1, -6]} scale={hover1 ? 1.1 : 1} />
+          </Interactive>
+          <Interactive onHover={() => setHover2(true)} onBlur={() => setHover2(false)}>
+            <CubeComplex position={[3, 1, -6]} scale={hover2 ? 1.1 : 1} />
+          </Interactive>
+        </XR>
+      </Canvas>
+    </>
   );
 }
 
